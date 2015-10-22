@@ -11,13 +11,16 @@ class TestPluginPlugin extends Omeka_Plugin_AbstractPlugin
  add_shortcode('test_plugin', array($this, 'shortcode'));
  }
  
- public function shortcode($sql, $view)
+ public function shortcode($select, $view)
 {
-$sql = Omeka_Db_Select()
-             ->from('omeka_element_texts',array('DISTINCT(text)'))
-             ->where('element_id =37','element_id =39');
+	
+$select = get_db()->getTable('ElementText')->getSelect()
+	-> distinct()
+	-> where('element_id=?', 37) 
+	-> ORwhere('element_id=?', 39);
 
-return $sql;
+return $select;
+
 return 'Hello shortcode!';
 
 }
